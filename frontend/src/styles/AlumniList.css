@@ -1,0 +1,113 @@
+/* Alumni List Page Styles */
+
+.alumni-list-container {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.page-title {
+  color: #333;
+  font-weight: bold;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+  color: #666;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.btn-add-alumni {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-add-alumni:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.table-responsive {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.alumni-table {
+  margin-bottom: 0;
+}
+
+.table-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.table-header th {
+  border: none;
+  font-weight: bold;
+  padding: 1rem;
+  vertical-align: middle;
+}
+
+.table-row {
+  transition: all 0.3s ease;
+  border-bottom: 1px solid #ddd;
+}
+
+.table-row:hover {
+  background-color: #f5f5f5;
+  transform: scale(1.01);
+}
+
+.name-cell {
+  font-weight: bold;
+  color: #667eea;
+}
+
+.action-cell {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.action-cell button {
+  font-size: 0.85rem;
+  padding: 0.4rem 0.6rem;
+  transition: all 0.2s ease;
+}
+
+.action-cell button:hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .btn-add-alumni {
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .table-responsive {
+    font-size: 0.85rem;
+  }
+
+  .table-header th,
+  .table-row td {
+    padding: 0.5rem;
+  }
+
+  .action-cell {
+    flex-direction: column;
+  }
+
+  .action-cell button {
+    width: 100%;
+  }
+}
