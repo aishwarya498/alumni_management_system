@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Table, Button, Spinner, Alert, Modal } from 'react-bootstrap';
+import { Container, Row, Col, Table, Button, Spinner, Alert, Modal, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { alumniService } from '../services/alumniService';
 import '../styles/AlumniList.css';
@@ -10,6 +10,7 @@ const AlumniList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [deleteId, setDeleteId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
@@ -58,7 +59,7 @@ const AlumniList = () => {
   return (
     <Container fluid className="alumni-list-container py-4">
       <Row className="mb-4">
-        <Col>
+        <Col md={6}>
           <h2 className="page-title">Alumni Directory</h2>
           <p className="page-subtitle">Browse all registered alumni profiles</p>
         </Col>
@@ -70,6 +71,14 @@ const AlumniList = () => {
           >
             + Add Alumni
           </Button>
+        </Col>
+        <Col md={3}>
+          <Form.Control
+            type="text"
+            placeholder="Search alumni..."
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+          />
         </Col>
       </Row>
 
@@ -102,7 +111,20 @@ const AlumniList = () => {
               </tr>
             </thead>
             <tbody>
-              {alumni.map((person, index) => (
+              {alumni
+                .filter(person => {
+                  const term = searchTerm.toLowerCase();
+                  const fullName = `${person.first_name} ${person.last_name}`.toLowerCase();
+                  return (
+                    fullName.includes(term) ||
+                    person.email.toLowerCase().includes(term) ||
+                    person.degree?.toLowerCase().includes(term) ||
+                    person.field_of_study?.toLowerCase().includes(term) ||
+                    person.current_company?.toLowerCase().includes(term) ||
+                    person.current_position?.toLowerCase().includes(term)
+                  );
+                })
+                .map((person, index) => (
                 <tr key={person.id} className="table-row">
                   <td>{index + 1}</td>
                   <td className="name-cell">

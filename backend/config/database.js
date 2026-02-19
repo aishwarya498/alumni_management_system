@@ -9,9 +9,9 @@ const pool = mysql.createPool({
   port: process.env.DB_PORT || 3306,
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0,
-  enableKeepAlive: true,
-  keepAliveInitialDelayMs: 0
+  queueLimit: 0
+  // enableKeepAlive and keepAliveInitialDelayMs removed because
+  // MySQL2 no longer accepts them; using pool defaults now
 });
 
 module.exports = pool;

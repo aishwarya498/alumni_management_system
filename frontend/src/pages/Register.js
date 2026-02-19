@@ -32,8 +32,11 @@ const Register = () => {
         // If backend returns a non-OK response (e.g., requires auth), fall back
         if (!response.ok || !data.success || !Array.isArray(data.data)) {
           // Provide safe defaults so users can still select a role during signup
+          // include admin and manager so the register page matches expected roles
           setAvailableRoles([
             { id: 1, name: 'alumni', description: 'Alumni Member' },
+            { id: 2, name: 'admin', description: 'Administrator' },
+            { id: 3, name: 'manager', description: 'Manager' },
             { id: 4, name: 'guest', description: 'Guest User' }
           ]);
         } else {
@@ -41,9 +44,11 @@ const Register = () => {
         }
       } catch (error) {
         console.error('Failed to fetch roles:', error);
-        // Default to alumni/guest if fetch throws
+        // Default to the full set if fetch throws
         setAvailableRoles([
           { id: 1, name: 'alumni', description: 'Alumni Member' },
+          { id: 2, name: 'admin', description: 'Administrator' },
+          { id: 3, name: 'manager', description: 'Manager' },
           { id: 4, name: 'guest', description: 'Guest User' }
         ]);
       } finally {
