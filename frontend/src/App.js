@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { UIProvider } from './context/UIContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -12,8 +13,19 @@ import SearchPage from './pages/SearchPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
-import AdminDashboard from './pages/AdminDashboard';
+import AdminDashboardNew from './pages/AdminDashboardNew';
+import ManagerDashboard from './pages/ManagerDashboard';
+import AlumniDashboard from './pages/AlumniDashboard';
 import RoleManagement from './pages/RoleManagement';
+
+// new module pages
+import Dashboard from './pages/Dashboard';
+import NetworkingHub from './pages/NetworkingHub';
+import JobPortal from './pages/JobPortal';
+import Donations from './pages/Donations';
+import EventsReunions from './pages/EventsReunions';
+import SuccessStories from './pages/SuccessStories';
+import Feedback from './pages/Feedback';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -21,7 +33,8 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <div className="d-flex flex-column min-vh-100">
+        <UIProvider>
+          <div className="d-flex flex-column min-vh-100">
           <Header />
           <main className="flex-grow-1">
             <Routes>
@@ -35,7 +48,17 @@ function App() {
               } />
               <Route path="/admin" element={
                 <ProtectedRoute requiredRoles={['admin']}>
-                  <AdminDashboard />
+                  <AdminDashboardNew />
+                </ProtectedRoute>
+              } />
+              <Route path="/manager" element={
+                <ProtectedRoute requiredRoles={['manager']}>
+                  <ManagerDashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/alumni-dashboard" element={
+                <ProtectedRoute requiredRoles={['alumni']}>
+                  <AlumniDashboard />
                 </ProtectedRoute>
               } />
               <Route path="/roles" element={
@@ -56,10 +79,20 @@ function App() {
                 </ProtectedRoute>
               } />
               <Route path="/search" element={<SearchPage />} />
+
+              {/* new module routes */}
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/networking" element={<NetworkingHub />} />
+              <Route path="/jobs" element={<JobPortal />} />
+              <Route path="/donations" element={<Donations />} />
+              <Route path="/events" element={<EventsReunions />} />
+              <Route path="/stories" element={<SuccessStories />} />
+              <Route path="/feedback" element={<Feedback />} />
             </Routes>
           </main>
           <Footer />
-        </div>
+          </div>
+        </UIProvider>
       </AuthProvider>
     </Router>
   );

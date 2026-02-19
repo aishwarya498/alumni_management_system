@@ -8,6 +8,14 @@ const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const roleRoutes = require('./routes/roleRoutes');
 
+// new feature routes
+const networkingRoutes = require('./routes/networkingRoutes');
+const jobRoutes = require('./routes/jobRoutes');
+const donationRoutes = require('./routes/donationRoutes');
+const eventRoutes = require('./routes/eventRoutes');
+const storyRoutes = require('./routes/storyRoutes');
+const feedbackRoutes = require('./routes/feedbackRoutes');
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 const User = require('./models/User');
@@ -23,6 +31,13 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/alumni', alumniRoutes);
+// mount new modules
+app.use('/api/networking', networkingRoutes);
+app.use('/api/jobs', jobRoutes);
+app.use('/api/donations', donationRoutes);
+app.use('/api/events', eventRoutes);
+app.use('/api/stories', storyRoutes);
+app.use('/api/feedback', feedbackRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -125,6 +140,21 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Backend server running on port ${PORT}`);
-});
+// start server with automatic port fallback if address is in use
+const startServer = (port) => {
+  const server = app.listen(port, () => {
+    console.log(`Backend server running on port ${port}`);
+  });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.warn(`Port ${port} already in use, trying ${port + 1}...`);
+      startServer(port + 1);
+    } else {
+      console.error('Server encountered an error:', err);
+      process.exit(1);
+    }
+  });
+};
+
+startServer(PORT);

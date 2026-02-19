@@ -63,24 +63,28 @@ const Login = () => {
     }
   };
 
-  // Demo credentials
   const fillDemoAdmin = () => {
     setFormData({ username: 'admin_user', password: 'Demo@123' });
+    setErrors({});
   };
 
   const fillDemoManager = () => {
     setFormData({ username: 'manager_user', password: 'Demo@123' });
+    setErrors({});
   };
 
   const fillDemoAlumni = () => {
     setFormData({ username: 'alumni_user', password: 'Demo@123' });
+    setErrors({});
   };
 
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h1>Alumni Management System</h1>
-        <h2>Login</h2>
+        <div className="auth-header">
+          <h1>Alumni Management System</h1>
+          <h2>Login</h2>
+        </div>
 
         {errors.submit && (
           <div className="alert alert-danger" role="alert">
@@ -88,7 +92,7 @@ const Login = () => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
             <label htmlFor="username">Username</label>
             <input
@@ -97,8 +101,9 @@ const Login = () => {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              className={`form-control ${errors.username ? 'is-invalid' : ''}`}
+              className={errors.username ? 'is-invalid' : ''}
               placeholder="Enter your username"
+              autoComplete="username"
             />
             {errors.username && (
               <div className="invalid-feedback">{errors.username}</div>
@@ -113,8 +118,9 @@ const Login = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+              className={errors.password ? 'is-invalid' : ''}
               placeholder="Enter your password"
+              autoComplete="current-password"
             />
             {errors.password && (
               <div className="invalid-feedback">{errors.password}</div>
@@ -123,7 +129,7 @@ const Login = () => {
 
           <button 
             type="submit" 
-            className="btn btn-primary btn-block w-100"
+            className="btn btn-primary"
             disabled={loading}
           >
             {loading ? 'Logging in...' : 'Login'}
@@ -137,32 +143,32 @@ const Login = () => {
         </div>
 
         <div className="demo-section">
-          <p className="demo-title">Demo Credentials:</p>
+          <p className="demo-title">Demo Credentials</p>
           <div className="demo-buttons">
             <button 
               type="button" 
-              className="btn btn-sm btn-outline-info"
+              className="btn-demo btn-demo-info"
               onClick={fillDemoAdmin}
             >
               Admin Demo
             </button>
             <button 
               type="button" 
-              className="btn btn-sm btn-outline-success"
+              className="btn-demo btn-demo-success"
               onClick={fillDemoManager}
             >
               Manager Demo
             </button>
             <button 
               type="button" 
-              className="btn btn-sm btn-outline-warning"
+              className="btn-demo btn-demo-warning"
               onClick={fillDemoAlumni}
             >
               Alumni Demo
             </button>
           </div>
-          <small className="text-muted">
-            Click a demo button to auto-fill seeded demo credentials (admin_user/Demo@123, manager_user/Demo@123, alumni_user/Demo@123)
+          <small>
+            Click a demo button to auto-fill credentials (Password: Demo@123)
           </small>
         </div>
       </div>

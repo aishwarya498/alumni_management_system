@@ -116,6 +116,86 @@ INSERT INTO alumni (user_id, first_name, last_name, email, phone, graduation_yea
 (NULL, 'Rohan', 'Desai', 'rohan.desai@example.com', '9876543218', 2014, 'Bachelor of Engineering', 'Civil Engineering', 'Larsen & Toubro', 'Project Engineer', 'Mumbai', 'India', 'Civil engineer', 1),
 (NULL, 'Sakshi', 'Joshi', 'sakshi.joshi@example.com', '9876543219', 2019, 'Master of Business Administration', 'Marketing', 'Amazon', 'Marketing Manager', 'Delhi', 'India', 'Marketing leader', 1);
 
+-- Create Networking posts
+CREATE TABLE networking_posts (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
+  title VARCHAR(150) NOT NULL,
+  content TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
+  INDEX idx_user_id (user_id),
+  INDEX idx_created_at (created_at)
+);
+
+-- Create Jobs table
+CREATE TABLE jobs (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(150) NOT NULL,
+  description TEXT,
+  company VARCHAR(150),
+  location VARCHAR(100),
+  posted_by INT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (posted_by) REFERENCES users(id) ON DELETE SET NULL,
+  INDEX idx_company (company),
+  INDEX idx_location (location)
+);
+
+-- Create Donations table
+CREATE TABLE donations (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  campaign_name VARCHAR(150) NOT NULL,
+  description TEXT,
+  goal_amount DECIMAL(12,2) DEFAULT 0,
+  collected_amount DECIMAL(12,2) DEFAULT 0,
+  start_date DATE,
+  end_date DATE,
+  created_by INT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
+);
+
+-- Create Events table
+CREATE TABLE events (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(150) NOT NULL,
+  description TEXT,
+  event_date DATETIME,
+  location VARCHAR(150),
+  created_by INT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
+);
+
+-- Create Success Stories table
+CREATE TABLE stories (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(200) NOT NULL,
+  content TEXT,
+  author_name VARCHAR(100),
+  created_by INT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
+);
+
+-- Create Feedback table
+CREATE TABLE feedback (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
+  message TEXT NOT NULL,
+  response TEXT,
+  status VARCHAR(50) DEFAULT 'new',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+);
+
 -- Create Views for Alumni Summary
 CREATE VIEW alumni_summary AS
 SELECT 

@@ -1,0 +1,141 @@
+/* Sidebar Styles - Faculty Portal Design */
+.sidebar-modern {
+  width: 250px;
+  /* gradient background using blue -> orange -> green */
+  background: linear-gradient(180deg, var(--primary-blue) 0%, var(--secondary-orange) 50%, var(--secondary-green) 100%);
+  border-right: 1px solid var(--border-color);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  overflow-y: auto;
+  z-index: 1000;
+  padding-top: 70px;
+}
+
+.sidebar-header {
+  padding: 2rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  /* use gradient that blends all three primary colors */
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-orange) 50%, var(--secondary-green) 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2rem;
+}
+
+.user-info h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.user-role {
+  font-size: 0.85rem;
+  color: #718096;
+  text-transform: capitalize;
+}
+
+.sidebar-menu {
+  padding: 1rem 0;
+}
+
+.menu-section {
+  margin-bottom: 2rem;
+}
+
+.menu-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 0 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1.5rem;
+  color: white;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  font-size: 0.95rem;
+  position: relative;
+}
+
+.sidebar-item i {
+  width: 20px;
+  font-size: 1.1rem;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.sidebar-item:hover {
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+.sidebar-item:hover i {
+  color: white;
+}
+
+.sidebar-item.active {
+  /* highlight active item with a brighter gradient border and white text */
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-weight: 600;
+  border-left: 3px solid var(--primary-blue);
+}
+
+.sidebar-item.active i {
+  color: #4c6fff;
+}
+
+/* Scrollbar for sidebar */
+.sidebar-modern::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-modern::-webkit-scrollbar-track {
+  background: #f5f7fa;
+}
+
+.sidebar-modern::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 3px;
+}
+
+.sidebar-modern::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar-modern {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar-modern.open {
+    transform: translateX(0);
+  }
+}
