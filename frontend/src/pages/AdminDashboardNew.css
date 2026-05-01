@@ -9,7 +9,9 @@
   flex: 1;
   margin-left: 250px;
   padding: 2rem;
-  padding-top: 90px;
+  padding-top: 2rem;
+  min-height: 100vh;
+  background: #f5f7fa;
 }
 
 /* small screen adjustments */

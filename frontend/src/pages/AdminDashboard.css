@@ -1,0 +1,187 @@
+/* ── Admin Dashboard specific styles ── */
+
+/* Top bar */
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  border-radius: 16px;
+  padding: 1.25rem 1.75rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  border: 1px solid #e2e8f0;
+}
+
+.admin-topbar-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #2d3748;
+  margin: 0;
+}
+
+.admin-topbar-sub {
+  font-size: 0.9rem;
+  color: #718096;
+  margin: 0;
+}
+
+.admin-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-topbar-user {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #4a5568;
+}
+
+.btn-logout {
+  display: flex;
+  align-items: center;
+  background: #fff5f5;
+  color: #e53e3e;
+  border: 2px solid #fed7d7;
+  border-radius: 8px;
+  padding: 0.5rem 1.25rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-logout:hover {
+  background: #e53e3e;
+  color: white;
+  border-color: #e53e3e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
+}
+
+/* Tabs */
+.admin-tabs {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.admin-tab {
+  padding: 0.75rem 1.5rem;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #718096;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-tab:hover {
+  border-color: #4c6fff;
+  color: #4c6fff;
+}
+
+.admin-tab.active {
+  background: #4c6fff;
+  border-color: #4c6fff;
+  color: white;
+  box-shadow: 0 4px 12px rgba(76, 111, 255, 0.3);
+}
+
+/* Panel */
+.admin-panel {
+  background: white;
+  border-radius: 16px;
+  padding: 1.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  border: 1px solid #e2e8f0;
+}
+
+.panel-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 1.5rem;
+}
+
+/* Roles grid */
+.roles-grid-modern {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.role-card-modern {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.role-card-modern:hover {
+  border-color: #4c6fff;
+  box-shadow: 0 4px 16px rgba(76, 111, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+.role-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.role-card-header i {
+  color: #4c6fff;
+  font-size: 1.2rem;
+}
+
+.role-card-header h5 {
+  margin: 0;
+  font-weight: 700;
+  color: #2d3748;
+  text-transform: capitalize;
+}
+
+.role-card-modern p {
+  color: #718096;
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+.role-perms {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.role-perms li {
+  font-size: 0.85rem;
+  color: #4a5568;
+  padding: 0.25rem 0;
+}
+
+.role-perms li i {
+  color: #00d25b;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .admin-tabs {
+    flex-direction: column;
+  }
+
+  .admin-tab {
+    width: 100%;
+  }
+}
