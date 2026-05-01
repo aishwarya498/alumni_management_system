@@ -92,24 +92,26 @@ const EventsReunions = () => {
           {loading ? (
             <div className="text-center py-5"><Spinner animation="border" /></div>
           ) : (
-            <Table striped bordered hover responsive>
-              <thead><tr><th>#</th><th>Event</th><th>Date</th><th>Location</th><th>Actions</th></tr></thead>
-              <tbody>{paginatedEvents.map((e, i) => (
-                <tr key={e.id}><td>{startIndex + i + 1}</td><td>{e.name}</td><td>{e.event_date?.split('T')[0]}</td><td>{e.location}</td>
-                  <td>
-                    <Button size="sm" variant="warning" className="me-2" onClick={() => openModal(e)}>Edit</Button>
-                    <Button size="sm" variant="danger" onClick={() => handleDelete(e.id)}>Delete</Button>
-                  </td>
-                </tr>
-              ))}</tbody>
-            </Table>
-            {filteredEvents.length > itemsPerPage && (
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={handlePageChange}
-              />
-            )}
+            <>
+              <Table striped bordered hover responsive>
+                <thead><tr><th>#</th><th>Event</th><th>Date</th><th>Location</th><th>Actions</th></tr></thead>
+                <tbody>{paginatedEvents.map((e, i) => (
+                  <tr key={e.id}><td>{startIndex + i + 1}</td><td>{e.name}</td><td>{e.event_date?.split('T')[0]}</td><td>{e.location}</td>
+                    <td>
+                      <Button size="sm" variant="warning" className="me-2" onClick={() => openModal(e)}>Edit</Button>
+                      <Button size="sm" variant="danger" onClick={() => handleDelete(e.id)}>Delete</Button>
+                    </td>
+                  </tr>
+                ))}</tbody>
+              </Table>
+              {filteredEvents.length > itemsPerPage && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={handlePageChange}
+                />
+              )}
+            </>
           )}
         </Container>
       </div>

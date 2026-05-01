@@ -142,14 +142,15 @@ app.use((err, req, res, next) => {
 
 // start server with automatic port fallback if address is in use
 const startServer = (port) => {
-  const server = app.listen(port, () => {
-    console.log(`Backend server running on port ${port}`);
+  const portNum = parseInt(port, 10);
+  const server = app.listen(portNum, () => {
+    console.log(`Backend server running on port ${portNum}`);
   });
 
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
-      console.warn(`Port ${port} already in use, trying ${port + 1}...`);
-      startServer(port + 1);
+      console.warn(`Port ${portNum} already in use, trying ${portNum + 1}...`);
+      startServer(portNum + 1);
     } else {
       console.error('Server encountered an error:', err);
       process.exit(1);
