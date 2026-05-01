@@ -40,6 +40,18 @@ const Header = () => {
     setExpanded(false);
   };
 
+  const getDashboardPath = () => {
+    if (hasRole('admin')) return '/admin';
+    if (hasRole('manager')) return '/manager';
+    return '/alumni-dashboard';
+  };
+
+  const getDashboardLabel = () => {
+    if (hasRole('admin')) return 'Admin Dashboard';
+    if (hasRole('manager')) return 'Manager Dashboard';
+    return 'My Dashboard';
+  };
+
   const isActiveLink = (path) => {
     return location.pathname === path;
   };
@@ -80,12 +92,44 @@ const Header = () => {
               <>
                 <Nav.Link 
                   as={Link} 
-                  to="/dashboard" 
-                  className={`nav-link-custom ${isActiveLink('/dashboard') ? 'active' : ''}`} 
+                  to={getDashboardPath()} 
+                  className={`nav-link-custom ${isActiveLink(getDashboardPath()) ? 'active' : ''}`} 
                   onClick={() => setExpanded(false)}
                 >
-                  <i className="fas fa-tachometer-alt me-1"></i> Dashboard
+                  <i className="fas fa-tachometer-alt me-1"></i> {getDashboardLabel()}
                 </Nav.Link>
+
+                {/* Role-specific navigation items */}
+                {(hasRole('admin') || hasRole('manager')) && (
+                  <Nav.Link 
+                    as={Link} 
+                    to="/alumni" 
+                    className={`nav-link-custom ${isActiveLink('/alumni') ? 'active' : ''}`} 
+                    onClick={() => setExpanded(false)}
+                  >
+                    <i className="fas fa-users me-1"></i> Alumni Directory
+                  </Nav.Link>
+                )}
+
+                <Nav.Link 
+                  as={Link} 
+                  to="/events" 
+                  className={`nav-link-custom ${isActiveLink('/events') ? 'active' : ''}`} 
+                  onClick={() => setExpanded(false)}
+                >
+                  <i className="fas fa-calendar-alt me-1"></i> Events
+                </Nav.Link>
+
+                {hasRole('alumni') && (
+                  <Nav.Link 
+                    as={Link} 
+                    to="/networking" 
+                    className={`nav-link-custom ${isActiveLink('/networking') ? 'active' : ''}`} 
+                    onClick={() => setExpanded(false)}
+                  >
+                    <i className="fas fa-network-wired me-1"></i> Networking
+                  </Nav.Link>
+                )}
 
                 <Dropdown className="nav-dropdown" align="end">
                   <Dropdown.Toggle as="a" className="nav-user-dropdown" id="user-dropdown">
@@ -94,7 +138,7 @@ const Header = () => {
                     </div>
                     <div className="user-info">
                       <span className="user-name">{user?.username}</span>
-                      <span className="user-role">{user?.roles?.[0]?.name || 'User'}</span>
+                      <span className="user-role">{user?.roles?.[0] || 'User'}</span>
                     </div>
                     <i className="fas fa-chevron-down dropdown-arrow"></i>
                   </Dropdown.Toggle>
@@ -112,21 +156,65 @@ const Header = () => {
                     <Dropdown.Item onClick={handleProfileClick} className="dropdown-item-custom">
                       <i className="fas fa-user me-2"></i> My Profile
                     </Dropdown.Item>
-                    {hasRole(['admin', 'manager']) && (
+                    
+                    {/* Quick access menu items */}
+                    {(hasRole('admin') || hasRole('manager')) && (
                       <>
-                        <Dropdown.Divider />
-                        {hasRole('admin') && (
-                          <>
-                            <Dropdown.Item onClick={handleAdminClick} className="dropdown-item-custom">
-                              <i className="fas fa-tachometer-alt me-2"></i> Admin Dashboard
-                            </Dropdown.Item>
-                            <Dropdown.Item as={Link} to="/roles" onClick={() => setExpanded(false)} className="dropdown-item-custom">
-                              <i className="fas fa-lock me-2"></i> Manage Roles
-                            </Dropdown.Item>
-                          </>
-                        )}
+                        <Dropdown.Item as={Link} to="/add-alumni" onClick={() => setExpanded(false)} className="dropdown-item-custom">
+                          <i className="fas fa-user-plus me-2"></i> Add Alumni
+                        </Dropdown.Item>
+                        <Dropdown.Item as={Link} to="/search" onClick={() => setExpanded(false)} className="dropdown-item-custom">
+                          <i className="fas fa-search me-2"></i> Search Alumni
+                        </Dropdown.Item>
                       </>
                     )}
+
+                    {hasRole('alumni') && (
+                      <>
+                        <Dropdown.Item as={Link} to="/jobs" onClick={() => setExpanded(false)} className="dropdown-item-custom">
+                          <i className="fas fa-briefcase me-2"></i> Job Portal
+                        </Dropdown.Item>
+                        <Dropdown.Item as={Link} to="/stories" onClick={() => setExpanded(false)} className="dropdown-item-custom">
+                          <i className="fas fa-star me-2"></i> Success Stories
+                        </Dropdown.Item>
+                      </>
+                    )}
+
+                    <Dropdown.Item as={Link} to="/donations" onClick={() => setExpanded(false)} className="dropdown-item-custom">
+                      <i className="fas fa-hand-holding-heart me-2"></i> Donations
+                    </Dropdown.Item>
+
+                    <Dropdown.Item as={Link} to="/feedback" onClick={() => setExpanded(false)} className="dropdown-item-custom">
+                      <i className="fas fa-comment-dots me-2"></i> Feedback
+                    </Dropdown.Item>
+
+                    <Dropdown.Item as={Link} to="/help" onClick={() => setExpanded(false)} className="dropdown-item-custom">
+                      <i className="fas fa-question-circle me-2"></i> Help Center
+                    </Dropdown.Item>
+
+                    {/* Admin specific items */}
+                    {hasRole('admin') && (
+                      <>
+                        <Dropdown.Divider />
+                        <Dropdown.Item onClick={handleAdminClick} className="dropdown-item-custom">
+                          <i className="fas fa-tachometer-alt me-2"></i> Admin Dashboard
+                        </Dropdown.Item>
+                        <Dropdown.Item as={Link} to="/roles" onClick={() => setExpanded(false)} className="dropdown-item-custom">
+                          <i className="fas fa-lock me-2"></i> Manage Roles
+                        </Dropdown.Item>
+                      </>
+                    )}
+
+                    {/* Manager specific items */}
+                    {hasRole('manager') && !hasRole('admin') && (
+                      <>
+                        <Dropdown.Divider />
+                        <Dropdown.Item as={Link} to="/manager" onClick={() => setExpanded(false)} className="dropdown-item-custom">
+                          <i className="fas fa-user-tie me-2"></i> Manager Dashboard
+                        </Dropdown.Item>
+                      </>
+                    )}
+
                     <Dropdown.Divider />
                     <Dropdown.Item onClick={handleLogout} className="logout-btn dropdown-item-custom">
                       <i className="fas fa-sign-out-alt me-2"></i> Logout

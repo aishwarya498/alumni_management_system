@@ -52,7 +52,9 @@ exports.register = async (req, res) => {
       }
     });
   } catch (error) {
-    res.status(400).json({
+    console.error('Registration error:', error);
+    // Internal server problems should return 500
+    res.status(500).json({
       success: false,
       message: error.message || 'Error during registration'
     });
@@ -113,6 +115,7 @@ exports.login = async (req, res) => {
       }
     });
   } catch (error) {
+    console.error('Login error:', error);
     res.status(401).json({
       success: false,
       message: error.message || 'Authentication failed'

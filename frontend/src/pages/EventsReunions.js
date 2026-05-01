@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Table, Button, Spinner, Alert, Modal, Form } from 'react-bootstrap';
 import Sidebar from '../components/Sidebar';
+import Pagination from '../components/Pagination';
 import './AdminDashboardNew.css';
 import { eventService } from '../services/eventService';
 
@@ -12,6 +13,8 @@ const EventsReunions = () => {
   const [showModal, setShowModal] = useState(false);
   const [current, setCurrent] = useState(null);
   const [formData, setFormData] = useState({ name: '', location: '', event_date: '', description: '' });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => { fetchEvents(); }, []);
 
@@ -47,6 +50,26 @@ const EventsReunions = () => {
     catch (err) { setError('Error deleting event'); console.error(err); }
   };
 
+  // Filter events based on search term
+  const filteredEvents = events.filter(e =>
+    e.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    e.location.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredEvents.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedEvents = filteredEvents.slice(startIndex, startIndex + itemsPerPage);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  // Reset to first page when search term changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
+
   return (
     <div className="dashboard-layout">
       <Sidebar />
@@ -71,13 +94,8 @@ const EventsReunions = () => {
           ) : (
             <Table striped bordered hover responsive>
               <thead><tr><th>#</th><th>Event</th><th>Date</th><th>Location</th><th>Actions</th></tr></thead>
-              <tbody>{events
-                .filter(e =>
-                  e.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                  e.location.toLowerCase().includes(searchTerm.toLowerCase())
-                )
-                .map((e, i) => (
-                <tr key={e.id}><td>{i+1}</td><td>{e.name}</td><td>{e.event_date?.split('T')[0]}</td><td>{e.location}</td>
+              <tbody>{paginatedEvents.map((e, i) => (
+                <tr key={e.id}><td>{startIndex + i + 1}</td><td>{e.name}</td><td>{e.event_date?.split('T')[0]}</td><td>{e.location}</td>
                   <td>
                     <Button size="sm" variant="warning" className="me-2" onClick={() => openModal(e)}>Edit</Button>
                     <Button size="sm" variant="danger" onClick={() => handleDelete(e.id)}>Delete</Button>
@@ -85,6 +103,13 @@ const EventsReunions = () => {
                 </tr>
               ))}</tbody>
             </Table>
+            {filteredEvents.length > itemsPerPage && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            )}
           )}
         </Container>
       </div>

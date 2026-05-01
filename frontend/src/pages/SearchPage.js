@@ -110,42 +110,39 @@ const SearchPage = () => {
             ) : (
               <div className="results-card">
                 <h4 className="results-title">Search Results ({results.length})</h4>
-                <div className="table-responsive">
-                  <Table striped bordered hover className="results-table">
-                    <thead className="table-header">
-                      <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Degree</th>
-                        <th>Company</th>
-                        <th>City</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {results.map((person) => (
-                        <tr key={person.id} className="result-row">
-                          <td className="name-cell">
-                            {person.first_name} {person.last_name}
-                          </td>
-                          <td>{person.email}</td>
-                          <td>{person.degree}</td>
-                          <td>{person.current_company || 'N/A'}</td>
-                          <td>{person.city || 'N/A'}</td>
-                          <td>
-                            <Button 
-                              variant="info" 
-                              size="sm"
-                              onClick={() => navigate(`/alumni/${person.id}`)}
-                            >
-                              View
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                </div>
+
+                <Row className="g-3">
+                  {results.map((person) => (
+                    <Col lg={4} md={6} sm={12} key={person.id}>
+                      <div className="result-card p-3">
+                        <div className="d-flex align-items-start gap-3">
+                          <div className="avatar-placeholder">{(person.first_name || 'A').charAt(0)}{(person.last_name || '').charAt(0)}</div>
+                          <div className="flex-grow-1">
+                            <div className="d-flex justify-content-between align-items-start">
+                              <div>
+                                <div className="name-cell">{person.first_name} {person.last_name}</div>
+                                <div className="muted small">{person.degree || '—'} • {person.current_company || 'N/A'}</div>
+                              </div>
+                              <div className="text-end">
+                                <div className="muted small">{person.city || '—'}</div>
+                              </div>
+                            </div>
+
+                            <div className="mt-2">
+                              <div className="email small">{person.email}</div>
+                            </div>
+
+                            <div className="mt-3 d-flex justify-content-end">
+                              <Button variant="outline-primary" size="sm" onClick={() => navigate(`/alumni/${person.id}`)}>
+                                View Profile
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Col>
+                  ))}
+                </Row>
               </div>
             )}
           </Col>

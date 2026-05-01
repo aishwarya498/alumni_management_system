@@ -249,7 +249,14 @@ const Home = () => {
 
           <Row className="mt-4">
             <Col lg={4} md={6} className="mb-4">
-              <div className="feature-box">
+              <div
+                className="feature-box"
+                role="button"
+                tabIndex={0}
+                onClick={() => navigate('/alumni')}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigate('/alumni'); }}
+                aria-label="Explore Alumni"
+              >
                 <div className="feature-icon">👥</div>
                 <h5>Explore Alumni</h5>
                 <p>Discover professionals from your batch and beyond.</p>
@@ -257,7 +264,14 @@ const Home = () => {
             </Col>
 
             <Col lg={4} md={6} className="mb-4">
-              <div className="feature-box">
+              <div
+                className="feature-box"
+                role="button"
+                tabIndex={0}
+                onClick={() => navigate('/add-alumni')}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigate('/add-alumni'); }}
+                aria-label="Create Profile"
+              >
                 <div className="feature-icon">➕</div>
                 <h5>Create Profile</h5>
                 <p>Showcase your achievements and career journey.</p>
@@ -265,7 +279,14 @@ const Home = () => {
             </Col>
 
             <Col lg={4} md={6} className="mb-4">
-              <div className="feature-box">
+              <div
+                className="feature-box"
+                role="button"
+                tabIndex={0}
+                onClick={() => navigate('/search')}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigate('/search'); }}
+                aria-label="Search Network"
+              >
                 <div className="feature-icon">🔍</div>
                 <h5>Search Network</h5>
                 <p>Find alumni by company, skills or graduation year.</p>

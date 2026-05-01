@@ -32,7 +32,7 @@ async function testConnection() {
     console.log('\n✅ All checks passed! Backend should work correctly.');
     process.exit(0);
   } catch (error) {
-    console.error('❌ Database connection failed:', error.message);
+    console.error('❌ Database connection failed:', error.stack || error.message);
     console.log('\nPossible solutions:');
     console.log('1. Make sure MySQL is running');
     console.log('2. Check your credentials in backend/.env');

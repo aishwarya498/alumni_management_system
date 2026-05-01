@@ -122,15 +122,23 @@ For detailed setup instructions, see [SETUP_INSTRUCTIONS.md](SETUP_INSTRUCTIONS.
 ### 5-Minute Setup
 
 **1. Database Setup**
+Ensure MySQL is running and you have created an user/database. You can import the schema directly:
 ```bash
 mysql -u root -p alumni_system < backend/alumni_schema.sql
 ```
+
+Make sure to set your connection details in `backend/.env` (copy from `.env.example`).
+
 
 **2. Backend Setup**
 ```bash
 cd backend
 npm install
-# Edit .env with your database credentials
+# Copy the example environment file and provide your own
+# (see backend/.env.example for guidance)
+copy .env.example .env   # Windows
+# or: cp .env.example .env  # macOS/Linux
+# then edit .env to match your MySQL credentials
 npm start
 ```
 
@@ -197,6 +205,11 @@ Protected Route Access → Token Verification → Role Check → Access Granted/
 | POST | `/api/auth/change-password` | Change password | Yes |
 
 ### User Management Endpoints (Admin/Manager)
+
+> **Note:** The `/api/roles` GET endpoint is intentionally public so the frontend registration
+> page can fetch available roles without requiring authentication. Other role-management
+> routes remain protected and require an admin token.
+
 
 | Method | Endpoint | Description | Role Required |
 |--------|----------|-------------|---|

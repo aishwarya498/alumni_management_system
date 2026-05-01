@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Table, Button, Spinner, Alert, Modal, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { alumniService } from '../services/alumniService';
+import Sidebar from '../components/Sidebar';
+import Pagination from '../components/Pagination';
 import '../styles/AlumniList.css';
 
 const AlumniList = () => {
@@ -12,6 +14,8 @@ const AlumniList = () => {
   const [deleteId, setDeleteId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     fetchAlumni();
@@ -49,6 +53,12 @@ const AlumniList = () => {
         setAlumni(alumni.filter(a => a.id !== deleteId));
         setShowDeleteModal(false);
         setDeleteId(null);
+        // Reset to first page if current page becomes empty
+        const filteredAlumni = alumni.filter(a => a.id !== deleteId);
+        const totalPages = Math.ceil(filteredAlumni.length / itemsPerPage);
+        if (currentPage > totalPages && totalPages > 0) {
+          setCurrentPage(totalPages);
+        }
       }
     } catch (error) {
       setError('Error deleting alumni profile');
@@ -56,8 +66,40 @@ const AlumniList = () => {
     }
   };
 
+  // Filter alumni based on search term
+  const filteredAlumni = alumni.filter(person => {
+    if (!searchTerm) return true;
+    const term = searchTerm.toLowerCase();
+    const fullName = `${person.first_name} ${person.last_name}`.toLowerCase();
+    return (
+      fullName.includes(term) ||
+      person.email.toLowerCase().includes(term) ||
+      person.degree?.toLowerCase().includes(term) ||
+      person.field_of_study?.toLowerCase().includes(term) ||
+      person.current_company?.toLowerCase().includes(term) ||
+      person.current_position?.toLowerCase().includes(term)
+    );
+  });
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredAlumni.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedAlumni = filteredAlumni.slice(startIndex, startIndex + itemsPerPage);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  // Reset to first page when search term changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
+
   return (
-    <Container fluid className="alumni-list-container py-4">
+    <div className="dashboard-layout">
+      <Sidebar />
+      <div className="dashboard-content">
+        <Container fluid className="alumni-list-container py-4">
       <Row className="mb-4">
         <Col md={6}>
           <h2 className="page-title">Alumni Directory</h2>
@@ -90,9 +132,9 @@ const AlumniList = () => {
             <span className="visually-hidden">Loading...</span>
           </Spinner>
         </div>
-      ) : alumni.length === 0 ? (
+      ) : filteredAlumni.length === 0 ? (
         <Alert variant="info" className="text-center">
-          No alumni records found. <a href="/add-alumni">Add the first one now!</a>
+          {searchTerm ? `No alumni found matching "${searchTerm}".` : 'No alumni records found.'} <a href="/add-alumni">Add the first one now!</a>
         </Alert>
       ) : (
         <div className="table-responsive">
@@ -111,22 +153,9 @@ const AlumniList = () => {
               </tr>
             </thead>
             <tbody>
-              {alumni
-                .filter(person => {
-                  const term = searchTerm.toLowerCase();
-                  const fullName = `${person.first_name} ${person.last_name}`.toLowerCase();
-                  return (
-                    fullName.includes(term) ||
-                    person.email.toLowerCase().includes(term) ||
-                    person.degree?.toLowerCase().includes(term) ||
-                    person.field_of_study?.toLowerCase().includes(term) ||
-                    person.current_company?.toLowerCase().includes(term) ||
-                    person.current_position?.toLowerCase().includes(term)
-                  );
-                })
-                .map((person, index) => (
+              {paginatedAlumni.map((person, index) => (
                 <tr key={person.id} className="table-row">
-                  <td>{index + 1}</td>
+                  <td>{startIndex + index + 1}</td>
                   <td className="name-cell">
                     {person.first_name} {person.last_name}
                   </td>
@@ -165,6 +194,13 @@ const AlumniList = () => {
               ))}
             </tbody>
           </Table>
+          {filteredAlumni.length > itemsPerPage && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          )}
         </div>
       )}
 
@@ -186,6 +222,8 @@ const AlumniList = () => {
         </Modal.Footer>
       </Modal>
     </Container>
+    </div>
+    </div>
   );
 };
 

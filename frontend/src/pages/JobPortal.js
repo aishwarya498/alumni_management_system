@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Table, Button, Spinner, Alert, Modal, Form } from 'react-bootstrap';
 import Sidebar from '../components/Sidebar';
+import Pagination from '../components/Pagination';
 import './AdminDashboardNew.css';
 import { jobService } from '../services/jobService';
 
@@ -12,6 +13,8 @@ const JobPortal = () => {
   const [showModal, setShowModal] = useState(false);
   const [currentJob, setCurrentJob] = useState(null);
   const [formData, setFormData] = useState({ title: '', company: '', location: '', description: '' });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     fetchJobs();
