@@ -19,6 +19,8 @@ A comprehensive full-stack web application for managing alumni profiles built wi
 - **Admin Dashboard**: Manage users, roles, and permissions
 - **Uniform Color Scheme**: Consistent purple gradient theme throughout the application
 
+ **Uniform Color Scheme**: Consistent purple gradient theme throughout the application
+
 ## 📋 Project Structure
 
 ```
