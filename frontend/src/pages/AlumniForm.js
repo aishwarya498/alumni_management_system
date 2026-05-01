@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Form, Button, Alert, Spinner } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import { alumniService } from '../services/alumniService';
+import Sidebar from '../components/Sidebar';
 import '../styles/AlumniForm.css';
 
 const AlumniForm = ({ isEdit = false }) => {
@@ -118,7 +119,10 @@ const AlumniForm = ({ isEdit = false }) => {
   }
 
   return (
-    <Container className="alumni-form-container py-4">
+    <div className="dashboard-layout">
+      <Sidebar />
+      <div className="dashboard-content">
+        <Container className="alumni-form-container py-4">
       <Row className="justify-content-center">
         <Col lg={8}>
           <div className="form-card">
@@ -337,6 +341,8 @@ const AlumniForm = ({ isEdit = false }) => {
         </Col>
       </Row>
     </Container>
+    </div>
+    </div>
   );
 };
 

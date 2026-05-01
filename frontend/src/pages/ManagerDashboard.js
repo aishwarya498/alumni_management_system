@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -6,7 +7,7 @@ import Sidebar from '../components/Sidebar';
 import './AdminDashboardNew.css';
 
 const ManagerDashboard = () => {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const navigate = useNavigate();
   const [stats, setStats] = useState({
     totalAlumni: 150,
@@ -14,12 +15,70 @@ const ManagerDashboard = () => {
     recentlyAdded: 15,
     pendingApprovals: 5
   });
+  const [users, setUsers] = useState([]);
+  const [usersLoading, setUsersLoading] = useState(false);
+  const [userError, setUserError] = useState('');
+  const [success, setSuccess] = useState('');
   const [currentTime, setCurrentTime] = useState(new Date());
+
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+  const headers = { Authorization: `Bearer ${token}` };
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      setUsersLoading(true);
+      const response = await axios.get(`${API_URL}/users`, { headers });
+      setUsers(response.data.data || []);
+      setUserError('');
+    } catch (error) {
+      setUserError('Unable to load users.');
+      console.error('Manager user fetch failed:', error);
+    } finally {
+      setUsersLoading(false);
+    }
+  };
+
+  const handleDeleteUser = async (userId, userRoles) => {
+    if (userRoles?.includes('admin')) {
+      setUserError('Managers cannot delete admin users.');
+      return;
+    }
+
+    if (!window.confirm('Delete this user?')) {
+      return;
+    }
+
+    try {
+      await axios.delete(`${API_URL}/users/${userId}`, { headers });
+      setSuccess('User deleted successfully.');
+      fetchUsers();
+      setTimeout(() => setSuccess(''), 3000);
+    } catch (error) {
+      setUserError(error.response?.data?.message || 'Failed to delete user.');
+      console.error('Manager delete failed:', error);
+    }
+  };
+
+  const toggleActiveStatus = async (userId, currentStatus) => {
+    try {
+      await axios.put(`${API_URL}/users/${userId}`, { is_active: !currentStatus }, { headers });
+      setSuccess(`User ${currentStatus ? 'deactivated' : 'activated'} successfully.`);
+      fetchUsers();
+      setTimeout(() => setSuccess(''), 3000);
+    } catch (error) {
+      setUserError(error.response?.data?.message || 'Failed to update user status.');
+      console.error('Manager update failed:', error);
+    }
+  };
 
   return (
     <div className="dashboard-layout">
@@ -139,6 +198,81 @@ const ManagerDashboard = () => {
                       </Button>
                     </Col>
                   </Row>
+                </Card.Body>
+              </Card>
+
+              <Card className="modern-card mt-4">
+                <Card.Body>
+                  <h4 className="section-title">Users Management</h4>
+
+                  {success && (
+                    <div className="alert alert-success" role="alert">
+                      {success}
+                    </div>
+                  )}
+                  {userError && (
+                    <div className="alert alert-danger" role="alert">
+                      {userError}
+                    </div>
+                  )}
+
+                  {usersLoading ? (
+                    <div className="text-center py-4">
+                      <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="table-responsive">
+                      <table className="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {users.length > 0 ? (
+                            users.map((userItem) => (
+                              <tr key={userItem.id}>
+                                <td>{userItem.id}</td>
+                                <td>{userItem.username}</td>
+                                <td>{userItem.email}</td>
+                                <td>{userItem.first_name} {userItem.last_name}</td>
+                                <td>{userItem.is_active ? 'Active' : 'Inactive'}</td>
+                                <td>
+                                  <Button
+                                    variant={userItem.is_active ? 'outline-secondary' : 'outline-success'}
+                                    size="sm"
+                                    className="me-2"
+                                    onClick={() => toggleActiveStatus(userItem.id, userItem.is_active)}
+                                  >
+                                    {userItem.is_active ? 'Deactivate' : 'Activate'}
+                                  </Button>
+                                  <Button
+                                    variant="outline-danger"
+                                    size="sm"
+                                    disabled={userItem.roles?.includes('admin')}
+                                    onClick={() => handleDeleteUser(userItem.id, userItem.roles)}
+                                  >
+                                    Delete
+                                  </Button>
+                                </td>
+                              </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td colSpan="6" className="text-center">No users found</td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
                 </Card.Body>
               </Card>
             </Col>

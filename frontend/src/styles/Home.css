@@ -198,6 +198,25 @@
   font-size: 3rem;
   margin-bottom: 1.5rem;
   color: #4c6fff;
+
+/* Clickable feature boxes (Home page) */
+.feature-box {
+  background: white;
+  padding: 2.5rem 2rem;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: 1px solid #e2e8f0;
+  height: 100%;
+  cursor: pointer;
+}
+
+.feature-box:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  border-color: #4c6fff;
+}
 }
 
 .feature-title {

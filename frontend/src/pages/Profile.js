@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import Sidebar from '../components/Sidebar';
 import '../styles/Profile.css';
 
 const Profile = () => {
@@ -156,7 +157,10 @@ const Profile = () => {
   };
 
   return (
-    <div className="profile-container">
+    <div className="dashboard-layout">
+      <Sidebar />
+      <div className="dashboard-content">
+        <div className="profile-container">
       <div className="profile-card">
         <div className="profile-header">
           <div className="profile-avatar">
@@ -318,6 +322,8 @@ const Profile = () => {
           )}
         </div>
       </div>
+    </div>
+    </div>
     </div>
   );
 };

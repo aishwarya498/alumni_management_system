@@ -1,6 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { UIProvider } from './context/UIContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -13,21 +13,49 @@ import SearchPage from './pages/SearchPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
-import AdminDashboardNew from './pages/AdminDashboardNew';
+import AdminDashboard from './pages/AdminDashboard';
 import ManagerDashboard from './pages/ManagerDashboard';
 import AlumniDashboard from './pages/AlumniDashboard';
 import RoleManagement from './pages/RoleManagement';
 
 // new module pages
-import Dashboard from './pages/Dashboard';
 import NetworkingHub from './pages/NetworkingHub';
 import JobPortal from './pages/JobPortal';
 import Donations from './pages/Donations';
 import EventsReunions from './pages/EventsReunions';
 import SuccessStories from './pages/SuccessStories';
 import Feedback from './pages/Feedback';
+
+// new resource pages
+import CareerServices from './pages/CareerServices';
+import Mentorship from './pages/Mentorship';
+import Newsletter from './pages/Newsletter';
+import HelpCenter from './pages/HelpCenter';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+
+const DashboardSwitch = () => {
+  const { user } = useAuth();
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (user.roles?.includes('admin')) {
+    return <AdminDashboard />;
+  }
+
+  if (user.roles?.includes('manager')) {
+    return <ManagerDashboard />;
+  }
+
+  if (user.roles?.includes('alumni')) {
+    return <AlumniDashboard />;
+  }
+
+  return <Navigate to="/" replace />;
+};
 
 function App() {
   return (
@@ -48,7 +76,7 @@ function App() {
               } />
               <Route path="/admin" element={
                 <ProtectedRoute requiredRoles={['admin']}>
-                  <AdminDashboardNew />
+                  <AdminDashboard />
                 </ProtectedRoute>
               } />
               <Route path="/manager" element={
@@ -66,8 +94,16 @@ function App() {
                   <RoleManagement />
                 </ProtectedRoute>
               } />
-              <Route path="/alumni" element={<AlumniList />} />
-              <Route path="/alumni/:id" element={<AlumniDetails />} />
+              <Route path="/alumni" element={
+                <ProtectedRoute>
+                  <AlumniList />
+                </ProtectedRoute>
+              } />
+              <Route path="/alumni/:id" element={
+                <ProtectedRoute>
+                  <AlumniDetails />
+                </ProtectedRoute>
+              } />
               <Route path="/add-alumni" element={
                 <ProtectedRoute requiredRoles={['admin', 'manager', 'alumni']}>
                   <AlumniForm isEdit={false} />
@@ -78,16 +114,70 @@ function App() {
                   <AlumniForm isEdit={true} />
                 </ProtectedRoute>
               } />
-              <Route path="/search" element={<SearchPage />} />
+              <Route path="/search" element={
+                <ProtectedRoute>
+                  <SearchPage />
+                </ProtectedRoute>
+              } />
 
               {/* new module routes */}
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/networking" element={<NetworkingHub />} />
-              <Route path="/jobs" element={<JobPortal />} />
-              <Route path="/donations" element={<Donations />} />
-              <Route path="/events" element={<EventsReunions />} />
-              <Route path="/stories" element={<SuccessStories />} />
-              <Route path="/feedback" element={<Feedback />} />
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <DashboardSwitch />
+                </ProtectedRoute>
+              } />
+              <Route path="/networking" element={
+                <ProtectedRoute>
+                  <NetworkingHub />
+                </ProtectedRoute>
+              } />
+              <Route path="/jobs" element={
+                <ProtectedRoute>
+                  <JobPortal />
+                </ProtectedRoute>
+              } />
+              <Route path="/donations" element={
+                <ProtectedRoute>
+                  <Donations />
+                </ProtectedRoute>
+              } />
+              <Route path="/events" element={
+                <ProtectedRoute>
+                  <EventsReunions />
+                </ProtectedRoute>
+              } />
+              <Route path="/stories" element={
+                <ProtectedRoute>
+                  <SuccessStories />
+                </ProtectedRoute>
+              } />
+              <Route path="/feedback" element={
+                <ProtectedRoute>
+                  <Feedback />
+                </ProtectedRoute>
+              } />
+
+              {/* resource pages */}
+              <Route path="/careers" element={
+                <ProtectedRoute>
+                  <CareerServices />
+                </ProtectedRoute>
+              } />
+              <Route path="/mentorship" element={
+                <ProtectedRoute>
+                  <Mentorship />
+                </ProtectedRoute>
+              } />
+              <Route path="/newsletter" element={
+                <ProtectedRoute>
+                  <Newsletter />
+                </ProtectedRoute>
+              } />
+              <Route path="/help" element={
+                <ProtectedRoute>
+                  <HelpCenter />
+                </ProtectedRoute>
+              } />
             </Routes>
           </main>
           <Footer />

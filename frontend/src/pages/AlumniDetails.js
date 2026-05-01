@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Card, Button, Spinner, Alert } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import { alumniService } from '../services/alumniService';
+import Sidebar from '../components/Sidebar';
 
 const AlumniDetails = () => {
   const { id } = useParams();
@@ -48,7 +49,10 @@ const AlumniDetails = () => {
   }
 
   return (
-    <Container className="py-4">
+    <div className="dashboard-layout">
+      <Sidebar />
+      <div className="dashboard-content">
+        <Container className="py-4">
       <Button 
         variant="secondary" 
         className="mb-3"
@@ -158,6 +162,8 @@ const AlumniDetails = () => {
         </Col>
       </Row>
     </Container>
+    </div>
+    </div>
   );
 };
 

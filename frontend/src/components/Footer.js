@@ -32,16 +32,40 @@ const Footer = () => {
                 share experiences, and create lasting professional networks that span generations.
               </p>
               <div className="social-links">
-                <a href="#" className="social-link" aria-label="Facebook">
+                <a
+                  href="https://www.facebook.com/YourUniversityPage"
+                  className="social-link"
+                  aria-label="Facebook"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <i className="fab fa-facebook-f"></i>
                 </a>
-                <a href="#" className="social-link" aria-label="Twitter">
+                <a
+                  href="https://twitter.com/YourUniversity"
+                  className="social-link"
+                  aria-label="Twitter"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <i className="fab fa-twitter"></i>
                 </a>
-                <a href="#" className="social-link" aria-label="LinkedIn">
+                <a
+                  href="https://www.linkedin.com/school/your-university/"
+                  className="social-link"
+                  aria-label="LinkedIn"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <i className="fab fa-linkedin-in"></i>
                 </a>
-                <a href="#" className="social-link" aria-label="Instagram">
+                <a
+                  href="https://www.instagram.com/youruniversity/"
+                  className="social-link"
+                  aria-label="Instagram"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <i className="fab fa-instagram"></i>
                 </a>
               </div>
@@ -62,11 +86,11 @@ const Footer = () => {
           <Col lg={3} md={6} className="mb-4">
             <h5 className="footer-section-title">Resources</h5>
             <ul className="footer-links">
-              <li><a href="#">Career Services</a></li>
-              <li><a href="#">Alumni Events</a></li>
-              <li><a href="#">Mentorship Program</a></li>
-              <li><a href="#">Newsletter</a></li>
-              <li><a href="#">Help Center</a></li>
+              <li><Link to="/careers">Career Services</Link></li>
+              <li><Link to="/events">Alumni Events</Link></li>
+              <li><Link to="/mentorship">Mentorship Program</Link></li>
+              <li><Link to="/newsletter">Newsletter</Link></li>
+              <li><Link to="/help">Help Center</Link></li>
             </ul>
           </Col>
           
@@ -77,21 +101,25 @@ const Footer = () => {
                 <i className="fas fa-envelope"></i>
                 <div>
                   <strong>Email</strong>
-                  <p>alumni@university.edu</p>
+                  <p><a href="mailto:alumni@university.edu">alumni@university.edu</a></p>
                 </div>
               </div>
               <div className="contact-item">
                 <i className="fas fa-phone"></i>
                 <div>
                   <strong>Phone</strong>
-                  <p>+91-XXXX-XXXX-XX</p>
+                  <p><a href="tel:+91-1234-567890">+91‑1234‑567890</a></p>
                 </div>
               </div>
               <div className="contact-item">
                 <i className="fas fa-map-marker-alt"></i>
                 <div>
                   <strong>Address</strong>
-                  <p>University Campus<br/>City, State 12345</p>
+                  <p>
+                    <a href="https://www.google.com/maps/place/University+Campus" target="_blank" rel="noopener noreferrer">
+                      University Campus<br />City, State 12345
+                    </a>
+                  </p>
                 </div>
               </div>
             </div>

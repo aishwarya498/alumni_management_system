@@ -29,16 +29,16 @@ const permissionValidationRules = () => {
   ];
 };
 
-// All role management routes require authentication and admin role
+// Public endpoint to list roles (used by registration page)
+router.get('/', roleController.getAllRoles);
+
+// All other role management routes require authentication and admin role
 router.use(verifyToken, checkRole(['admin']));
 
 // Create role
 router.post('/', createRoleValidationRules(), validateRequest, roleController.createRole);
 
-// Get all roles
-router.get('/', roleController.getAllRoles);
-
-// Get role by ID
+// Get role by ID (admin only)
 router.get('/:id', roleController.getRoleById);
 
 // Update role
